@@ -28,13 +28,14 @@
       const { render } = ReactDOM;
       const { HashRouter, Switch, Link, Route, Redirect } = ReactRouterDOM;
       const root = document.querySelector('#root');
-            
+
       const Nav = () => {
+
         return(
           <nav>
-            <Link to = '/notes'> Notes </Link>
+            <Link to = '/notes/status'> Notes </Link>
             <Link to = '/archive'> Archive </Link>
-            <Link to = '/create'> Create </Link>
+            <Link to = '/notes/create'> Create </Link>
           </nav>
         )
       }
@@ -47,7 +48,7 @@
           </ul>
         )
       }
-      
+
       class App extends Component{
         constructor (){
           super();
@@ -56,18 +57,19 @@
             noteData : []
           };
         }
-        
+
         async componentDidMount(){
           const user = await fetchUser();
           const note = await axios.get(`${API}/users/${user.id}/notes`)
           const userName = user.fullName;
           const noteData = note.data
-          
+
           this.setState({ userName, noteData });
         }
-        
+
         render(){
           const { userName, noteData } = this.state;
+          //const path = props.location.pathname;
           return(
             <div>
               <HashRouter>
@@ -77,7 +79,7 @@
                   <Route path='/notes/status' render = { props => <Notes noteData = { noteData } /> } />
                 </Switch>
               </HashRouter>
-              
+
               <h1> Acme Note - Taker { userName } </h1>
             </div>
           )
