@@ -39,29 +39,43 @@
         )
       }
 
+      const Notes = ( noteData ) => {
+        console.log(noteData)
 
+        return (
+          <ul>
+          </ul>
+        )
+      }
+      
       class App extends Component{
         constructor (){
           super();
           this.state = {
-            notes : [],
-            userName : ''
+            userName : '',
+            noteData : []
           };
         }
         
         async componentDidMount(){
           const user = await fetchUser();
-          const data = await axios.get(`${API}/users/${user.id}/notes`)
+          const note = await axios.get(`${API}/users/${user.id}/notes`)
           const userName = user.fullName;
-          this.setState({ userName });
+          const noteData = note.data
+          
+          this.setState({ userName, noteData });
         }
         
         render(){
-          const { userName } = this.state;
+          const { userName, noteData } = this.state;
           return(
             <div>
               <HashRouter>
                 <Route component = { Nav } />
+                <Switch>
+                  <Route path='/notes/create'/>
+                  <Route path='/notes/status' render = { props => <Notes noteData = { noteData } /> } />
+                </Switch>
               </HashRouter>
               
               <h1> Acme Note - Taker { userName } </h1>
