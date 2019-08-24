@@ -13,11 +13,8 @@
     <div id = "root"></div>
     <h1> Acme Note - Taker **insert name here later** </h1>
 
-    <script>
+    <script type = 'text/babel'>
 
-
-      // Desconstruct components from RouterDOM
-      //
       // Nav 3 pages - with Router
       // Class App
       // create render for the input form
@@ -28,7 +25,38 @@
       //
       // generate fake user
 
+      const { Component } = React;
+      const { render } = ReactDOM;
+      const { HashRouter, Switch, Link, Route, Redirect } = ReactRouterDOM;
+      const root = document.querySelector('#root');
 
+      const Nav = () => {
+        return(
+          <nav>
+            <Link to = '/notes'> Notes </Link>
+            <Link to = '/archive'> Archive </Link>
+            <Link to = '/create'> Create </Link>
+          </nav>
+        )
+      }
+
+
+      class App extends Component{
+
+        render(){
+
+          return(
+            <HashRouter>
+              <Route component = { Nav } />
+            </HashRouter>
+
+          )
+
+        }
+      }
+
+
+      render( <App />, root);
 
     </script>
 
