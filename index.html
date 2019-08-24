@@ -29,7 +29,7 @@
       const { render } = ReactDOM;
       const { HashRouter, Switch, Link, Route, Redirect } = ReactRouterDOM;
       const root = document.querySelector('#root');
-
+            
       const Nav = () => {
         return(
           <nav>
@@ -42,7 +42,20 @@
 
 
       class App extends Component{
+        constructor (){
+          super();
+          this.state = {
+            notes : []
+          };
+        }
+        
+        async componentDidMount(){
+          const user = await fetchUser();
+          const data = await axios.get(`${API}/users/${user.id}/notes`).data;
+          console.log(data);
 
+        }
+        
         render(){
 
           return(
