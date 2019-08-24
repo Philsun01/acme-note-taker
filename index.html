@@ -11,7 +11,6 @@
 
   <body>
     <div id = "root"></div>
-    <h1> Acme Note - Taker **insert name here later** </h1>
 
     <script type = 'text/babel'>
 
@@ -45,24 +44,28 @@
         constructor (){
           super();
           this.state = {
-            notes : []
+            notes : [],
+            userName : ''
           };
         }
         
         async componentDidMount(){
           const user = await fetchUser();
-          const data = await axios.get(`${API}/users/${user.id}/notes`).data;
-          console.log(data);
-
+          const data = await axios.get(`${API}/users/${user.id}/notes`)
+          const userName = user.fullName;
+          this.setState({ userName });
         }
         
         render(){
-
+          const { userName } = this.state;
           return(
-            <HashRouter>
-              <Route component = { Nav } />
-            </HashRouter>
-
+            <div>
+              <HashRouter>
+                <Route component = { Nav } />
+              </HashRouter>
+              
+              <h1> Acme Note - Taker { userName } </h1>
+            </div>
           )
 
         }
