@@ -34,20 +34,42 @@
         return(
           <nav>
             <Link to = '/notes/status'> Notes </Link>
-            <Link to = '/archive'> Archive </Link>
+            <Link to = '/notes/archived'> Archive </Link>
             <Link to = '/notes/create'> Create </Link>
           </nav>
         )
       }
 
-      const Notes = ( noteData ) => {
-        console.log(noteData)
+      const Notes = ( { noteData } ) => {
+
+        const notes = noteData.filter(note=>!note.archived)
 
         return (
           <ul>
+            { notes.map(note =>   <li key = {note.id}> ${note.text} </li> )}
           </ul>
         )
       }
+
+      const Archived = ( { noteData } ) => {
+
+        const notes = noteData.filter(note=>note.archived)
+
+        return (
+          <ul>
+            { notes.map(note =>   <li key = {note.id}> ${note.text} </li> )}
+          </ul>
+        )
+      }
+
+      const Create = ( { noteData } ) => {
+
+        const notes = noteData.filter(note=>note.archived)
+
+        return (
+          <h1> hello </h1>
+        )
+        }
 
       class App extends Component{
         constructor (){
@@ -67,6 +89,10 @@
           this.setState({ userName, noteData });
         }
 
+        create(note){ //sending info to the API
+          const created = ( await axios.post(`${API}/users/${user.id}/notes`, note) ).data
+        }
+
         render(){
           const { userName, noteData } = this.state;
           //const path = props.location.pathname;
@@ -74,13 +100,15 @@
             <div>
               <HashRouter>
                 <Route component = { Nav } />
+                <h1> Acme Note - Taker { userName } </h1>
                 <Switch>
-                  <Route path='/notes/create'/>
+                  <Route path='/notes/create' render = { props => <Create noteData = { noteData } /> }/>
                   <Route path='/notes/status' render = { props => <Notes noteData = { noteData } /> } />
+                  <Route path='/notes/archived' render = { props => <Archived noteData = { noteData } /> } />
                 </Switch>
               </HashRouter>
 
-              <h1> Acme Note - Taker { userName } </h1>
+
             </div>
           )
 
